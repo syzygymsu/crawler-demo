@@ -1,13 +1,15 @@
 #include "destruction_stack.h"
 
+
 void DestructionStack::push(std::function<void()> destructor) {
-	destructors.push(destructor);
+	destructors_.push(destructor);
 }
 
+
 DestructionStack::~DestructionStack() {
-	while(!destructors.empty()) {
-		std::function<void()> destructor = destructors.top();
-		destructors.pop();
+	while(!destructors_.empty()) {
+		std::function<void()> destructor = destructors_.top();
+		destructors_.pop();
 		destructor();
 	}
 }
