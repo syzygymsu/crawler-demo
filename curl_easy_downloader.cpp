@@ -31,10 +31,10 @@ size_t CurlWriteCallback(char *buffer, size_t block_size, size_t blocks_count, v
 void CurlEasyDownloader::Download(DownloadJob job) {
 	CURLcode result;
 	
-	Document document = repository().createDocument(job.url);
+	RepositoryDocument document = repository().CreateDocument(job.url);
 	
 	CurlUserData user_data;
-	user_data.write_stream.open(document.savePath);
+	user_data.write_stream.open(document.save_path);
 	
 	CURL *handle = curl_easy_init();
 	curl_easy_setopt(handle, CURLOPT_URL, job.url.c_str());

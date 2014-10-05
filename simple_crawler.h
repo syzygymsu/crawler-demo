@@ -25,7 +25,7 @@ public:
 private:
 	// реализация DownloadFeedbackInteraface
 	void AddRedirect(DownloadJob job, std::string url) override;
-	void AddDocument(DownloadJob job, Document document) override;
+	void AddDocument(DownloadJob job, RepositoryDocument document) override;
 	
 	// реализация ParseFeedbackInterface
 	void AddHyperlink(ParseJob job, std::string url) override;

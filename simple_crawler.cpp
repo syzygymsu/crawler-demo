@@ -72,7 +72,7 @@ void SimpleCrawler::AddRedirect(DownloadJob job, std::string url) {
 }
 
 
-void SimpleCrawler::AddDocument(DownloadJob download_job, Document document) {
+void SimpleCrawler::AddDocument(DownloadJob download_job, RepositoryDocument document) {
 	if(crawler_job_.maxDepth>=0 && download_job.depth>=crawler_job_.maxDepth) {
 		// Превышена глубина сканирования
 		return ;
@@ -81,7 +81,7 @@ void SimpleCrawler::AddDocument(DownloadJob download_job, Document document) {
 	ParseJob parseJob;
 	parseJob.document = document;
 	parseJob.depth = download_job.depth;
-	std::cout << "Parsing: " << parseJob.document.originUrl << std::endl;
+	std::cout << "Parsing: " << parseJob.document.origin_url << std::endl;
 	parser_.Parse(parseJob);
 }
 

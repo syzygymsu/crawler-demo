@@ -3,13 +3,12 @@
 #ifndef PARSE_INTERFACE_H_
 #define	PARSE_INTERFACE_H_
 
-#include "document.h"
-
+#include "repository.h"
 
 // Данные, определяющие отдельное задание для парсера
 struct ParseJob {
 	// Документ для парсинга
-	Document document;
+	RepositoryDocument document;
 	
 	// Глубина вложенности данного задания
 	int depth;

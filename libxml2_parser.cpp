@@ -13,7 +13,7 @@ void Libxml2Parser::Parse(ParseJob job) {
 	
 	// Парсим документ
 	htmlDocPtr html_document = htmlReadFile(
-			job.document.savePath.c_str(),
+			job.document.save_path.c_str(),
 			nullptr, // encoding
 			HTML_PARSE_RECOVER | HTML_PARSE_NOWARNING | HTML_PARSE_NOERROR
 	);
@@ -55,7 +55,7 @@ void Libxml2Parser::Parse(ParseJob job) {
 			// Преобразуем относительные пути в абсолютные
 			xmlChar *url = xmlBuildURI(
 					href,
-					(const xmlChar*)job.document.originUrl.c_str()
+					(const xmlChar*)job.document.origin_url.c_str()
 			);
 			if(url) {
 				feedback().AddHyperlink(job, (const char*)url);

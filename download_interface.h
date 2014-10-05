@@ -5,7 +5,6 @@
 
 #include <string>
 
-#include "document.h"
 #include "repository.h"
 
 
@@ -34,7 +33,7 @@ public:
 	// Вызывается при успешной загрузке документа
 	virtual void AddDocument(
 			DownloadJob job, // оригинальное задание
-			Document document // загруженный документ
+			RepositoryDocument document // загруженный документ
 	) = 0;
 };
 
