@@ -8,7 +8,7 @@ struct CurlUserData {
 	std::ofstream writeStream;
 };
 
-void EasyDownloader::download(const DownloadJob &job, Repository &repository, IDownloadFeedback &feedback) {
+void EasyDownloader::Download(DownloadJob job, Repository &repository, DownloadFeedbackInteraface &feedback) {
 	Document document = repository.createDocument(job.url);
 	
 	CurlUserData userData;
@@ -27,7 +27,7 @@ void EasyDownloader::download(const DownloadJob &job, Repository &repository, ID
 		
 		switch(httpCode) {
 			case 200:
-				feedback.addDocument(job, document);
+				feedback.AddDocument(job, document);
 				break;
 
 			case 301:
@@ -36,7 +36,7 @@ void EasyDownloader::download(const DownloadJob &job, Repository &repository, ID
 			case 307:
 				char *redirectUrl;
 				curl_easy_getinfo(handle, CURLINFO_REDIRECT_URL, &redirectUrl);
-				feedback.addRedirect(job, redirectUrl);
+				feedback.AddRedirect(job, redirectUrl);
 				break;
 				
 			default:

@@ -7,12 +7,12 @@
 
 #include "repository.h"
 #include "crawler_job.h"
-#include "download_feedback.h"
-#include "curl_easy_downloader.h"
 #include "parse_interface.h"
+#include "download_interface.h"
+#include "curl_easy_downloader.h"
 #include "libxml_parser.h"
 
-class SimpleCrawler: virtual IDownloadFeedback, virtual ParseFeedbackInterface {
+class SimpleCrawler: virtual DownloadFeedbackInteraface, virtual ParseFeedbackInterface {
 public:
 	SimpleCrawler(Repository &repository, CrawlerJob &job);
 	
@@ -32,12 +32,12 @@ private:
 	Document lastDocument;
 	bool documentDownloaded;
 
-	// реализация IDownloaderFeedback
-	virtual void addRedirect(const DownloadJob& job, std::string url);
-	virtual void addDocument(const DownloadJob& job, Document& document);
+	// реализация DownloadFeedbackInteraface
+	virtual void AddRedirect(DownloadJob job, std::string url);
+	virtual void AddDocument(DownloadJob job, Document& document);
 	
-	// реализация IParseFeedback
-	virtual void addHyperlink(const ParseJob& job, std::string url);
+	// реализация ParseFeedbackInterface
+	virtual void AddHyperlink(ParseJob job, std::string url);
 
 };
 
