@@ -1,4 +1,4 @@
-#include "XmlParser.h"
+#include "libxml_parser.h"
 
 #define LIBXML_HTML_ENABLED
 
@@ -6,7 +6,7 @@
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
 
-#include "DestructionStack.h"
+#include "destruction_stack.h"
 
 void XmlParser::parseDocument(ParseJob &job, IParseFeedback& feedback) {
 	DestructionStack destructors;

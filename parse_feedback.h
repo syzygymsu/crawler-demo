@@ -1,7 +1,7 @@
 #ifndef IPARSEFEEDBACK_H
 #define	IPARSEFEEDBACK_H
 
-#include "ParseJob.h"
+#include "parse_job.h"
 
 struct IParseFeedback {
 	virtual ~IParseFeedback() {}

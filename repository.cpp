@@ -1,5 +1,5 @@
-#include "Repository.h"
-#include "UrlInfo.h"
+#include "repository.h"
+#include "url_info.h"
 
 #include <boost/filesystem.hpp>
 

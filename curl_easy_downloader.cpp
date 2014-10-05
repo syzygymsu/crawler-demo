@@ -1,4 +1,4 @@
-#include "EasyDownloader.h"
+#include "curl_easy_downloader.h"
 
 #include <fstream>
 

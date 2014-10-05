@@ -1,8 +1,8 @@
 #ifndef IDOWNLOADFEEDBACK_H
 #define	IDOWNLOADFEEDBACK_H
 
-#include "DonloadJob.h"
-#include "Document.h"
+#include "download_job.h"
+#include "document.h"
 
 struct IDownloadFeedback {
 	virtual ~IDownloadFeedback() {}

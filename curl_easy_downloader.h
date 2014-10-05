@@ -1,9 +1,9 @@
 #ifndef EASYDOWNLOADER_H
 #define	EASYDOWNLOADER_H
 
-#include "DonloadJob.h"
-#include "Repository.h"
-#include "IDownloadFeedback.h"
+#include "download_job.h"
+#include "repository.h"
+#include "download_feedback.h"
 
 class EasyDownloader {
 public:

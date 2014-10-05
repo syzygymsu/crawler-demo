@@ -8,9 +8,9 @@
 #include <libxml/parser.h>
 #include <boost/program_options.hpp>
 
-#include "Repository.h"
-#include "CrawlerJob.h"
-#include "SimpleCrawler.h"
+#include "repository.h"
+#include "crawler_job.h"
+#include "simple_crawler.h"
 
 namespace po = boost::program_options;
 

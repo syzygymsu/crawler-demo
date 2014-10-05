@@ -5,12 +5,12 @@
 #include <set>
 #include <string>
 
-#include "Repository.h"
-#include "CrawlerJob.h"
-#include "IDownloadFeedback.h"
-#include "EasyDownloader.h"
-#include "IParseFeedback.h"
-#include "XmlParser.h"
+#include "repository.h"
+#include "crawler_job.h"
+#include "download_feedback.h"
+#include "curl_easy_downloader.h"
+#include "parse_feedback.h"
+#include "libxml_parser.h"
 
 class SimpleCrawler: virtual IDownloadFeedback, virtual IParseFeedback {
 public:

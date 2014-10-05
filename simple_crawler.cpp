@@ -1,6 +1,6 @@
-#include "SimpleCrawler.h"
-#include "ParseJob.h"
-#include "UrlInfo.h"
+#include "simple_crawler.h"
+#include "parse_job.h"
+#include "url_info.h"
 
 #include <algorithm>
 #include <iostream>

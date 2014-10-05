@@ -1,8 +1,8 @@
 #ifndef XMLPARSER_H
 #define	XMLPARSER_H
 
-#include "Document.h"
-#include "IParseFeedback.h"
+#include "document.h"
+#include "parse_feedback.h"
 
 class XmlParser {
 public:
