@@ -36,7 +36,7 @@ void SimpleCrawler::addUrl(std::string url, int depth) {
 		}
 	}
 	
-	UrlInfo urlInfo(url);
+	UrlInfo urlInfo = ParseUrl(url);
 	std::transform(urlInfo.schema.begin(), urlInfo.schema.end(), urlInfo.schema.begin(), tolower);
 	if(urlInfo.schema!="http" && urlInfo.schema!="https") {
 		// неизвестный протокол

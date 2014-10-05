@@ -22,7 +22,7 @@ Repository::Repository(const std::string& basePath):
 std::string Repository::pathFromUrl(std::string url) {
 	fs::path path(basePath);
 	
-	UrlInfo urlInfo(url);
+	UrlInfo urlInfo = ParseUrl(url);
 	
 	{
 		std::string schema = urlInfo.schema;
