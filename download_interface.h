@@ -64,7 +64,7 @@ class DownloaderBase: virtual public DownloaderInterface {
 public:
 	inline void init(
 			Repository &repository,
-			DownloadFeedbackInteraface &feedback ) {
+			DownloadFeedbackInteraface &feedback ) override {
 		repository_ = &repository;
 		feedback_ = &feedback;
 	}

@@ -51,7 +51,7 @@ public:
 // Базовый абстрактный класс парсера. Реализовано сохранение зависимостей.
 class ParserBase: virtual public ParserInterface {
 public:
-	inline void init(ParseFeedbackInterface &feedback ) {
+	inline void init(ParseFeedbackInterface &feedback ) override {
 		feedback_ = &feedback;
 	}
 protected:
