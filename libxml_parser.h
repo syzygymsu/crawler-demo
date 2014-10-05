@@ -3,9 +3,9 @@
 
 #include "parse_interface.h"
 
-class XmlParser: virtual public ParserInterface {
+class XmlParser: public ParserBase {
 public:
-	void Parse(ParseJob job, ParseFeedbackInterface& feedback);
+	void Parse(ParseJob job);
 };
 
 #endif	/* XMLPARSER_H */

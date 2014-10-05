@@ -35,13 +35,31 @@ class ParserInterface {
 public:
 	virtual ~ParserInterface() {}
 	
-	// Выполняет задание на парсинг.
-	// Вызывающий код обязан обеспечить существование объекта feedback
-	// до окончания выполнения функции.
-	virtual void Parse(
-			ParseJob job, // Задание на парсинг
+	// Задает необходимые зависимости. Вызывающий код обязан обеспечить
+	// существование объектов зависимостей во время работы функции Parse
+	virtual void init(
 			ParseFeedbackInterface &feedback // Интерфейс обратной связи
 	) = 0;
+	
+	// Выполняет задание на парсинг.
+	virtual void Parse(
+			ParseJob job // Задание на парсинг
+	) = 0;
+};
+
+
+// Базовый абстрактный класс парсера. Реализовано сохранение зависимостей.
+class ParserBase: virtual public ParserInterface {
+public:
+	inline void init(ParseFeedbackInterface &feedback ) {
+		feedback_ = &feedback;
+	}
+protected:
+	inline ParseFeedbackInterface &feedback() {
+		return *feedback_;
+	}
+private:
+	ParseFeedbackInterface *feedback_;
 };
 
 

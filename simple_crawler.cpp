@@ -10,6 +10,7 @@ SimpleCrawler::SimpleCrawler(Repository& repository, CrawlerJob& job) :
 		addUrl(url, 0);
 	}
 	downloader.init(repository, *this);
+	parser.init(*this);
 }
 
 
@@ -64,7 +65,7 @@ void SimpleCrawler::execute() {
 				parseJob.document = lastDocument;
 				parseJob.depth = dlJob.depth;
 				std::cout << "Parsing: " << parseJob.document.originUrl << std::endl;
-				parser.Parse(parseJob, *this);
+				parser.Parse(parseJob);
 			}
 		}
 	}
