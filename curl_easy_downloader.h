@@ -4,9 +4,9 @@
 #include "repository.h"
 #include "download_interface.h"
 
-class EasyDownloader: virtual public DownloaderInterface {
+class EasyDownloader: public DownloaderBase {
 public:
-	void Download(DownloadJob job, Repository &repository, DownloadFeedbackInteraface &feedback);
+	void Download(DownloadJob job);
 private:
 	static size_t curlWriteCallback(char *ptr, size_t size, size_t nmemb, void *userdata);
 };

@@ -34,7 +34,7 @@ private:
 
 	// реализация DownloadFeedbackInteraface
 	virtual void AddRedirect(DownloadJob job, std::string url);
-	virtual void AddDocument(DownloadJob job, Document& document);
+	virtual void AddDocument(DownloadJob job, Document document);
 	
 	// реализация ParseFeedbackInterface
 	virtual void AddHyperlink(ParseJob job, std::string url);

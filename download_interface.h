@@ -43,17 +43,41 @@ public:
 class DownloaderInterface {
 public:
 	virtual ~DownloaderInterface() {}
-
-	// Выполняет задание на загрузку.
-	// Вызывающий код обязан обеспечить существование объектов repository
-	// и feedback до окончания выполнения функции.
-	virtual void Download(
-			DownloadJob job, // Задание на загрузку
+	
+	// Задает необходимые зависимости. Вызывающий код обязан обеспечить
+	// существование объектов зависимостей во время работы функции Download
+	virtual void init(
 			Repository &repository, // Репозиторий, в который будут сохраняться
 			                        // скачанные документы
-			DownloadFeedbackInteraface &feedback // Интерфейс обратной связи
+			DownloadFeedbackInteraface &feedback // Интерйес обратной связи
+	) = 0;
+
+	// Выполняет задание на загрузку.
+	virtual void Download(
+			DownloadJob job // Задание на загрузку
 	) = 0;
 };
 
+
+// Базовый абстраутный класс загрузчика. Реализовано сохранение зависимостей.
+class DownloaderBase: virtual public DownloaderInterface {
+public:
+	inline void init(
+			Repository &repository,
+			DownloadFeedbackInteraface &feedback ) {
+		repository_ = &repository;
+		feedback_ = &feedback;
+	}
+protected:
+	inline Repository &repository() {
+		return *repository_;
+	}
+	inline DownloadFeedbackInteraface &feedback() {
+		return *feedback_;
+	}
+private:
+	Repository *repository_;
+	DownloadFeedbackInteraface *feedback_;
+};
 
 #endif	/* DOWNLOAD_INTERFACE_H_ */

@@ -9,6 +9,7 @@ SimpleCrawler::SimpleCrawler(Repository& repository, CrawlerJob& job) :
 	for(auto url: job.initialUrls) {
 		addUrl(url, 0);
 	}
+	downloader.init(repository, *this);
 }
 
 
@@ -56,7 +57,7 @@ void SimpleCrawler::execute() {
 		std::cout << "Downloading: " << dlJob.url << std::endl;
 		
 		documentDownloaded = false;
-		downloader.Download(dlJob, repository, *this);
+		downloader.Download(dlJob);
 		if(documentDownloaded) {
 			if(job.maxDepth<0 || dlJob.depth<job.maxDepth) {
 				ParseJob parseJob;
@@ -73,7 +74,7 @@ void SimpleCrawler::AddRedirect(DownloadJob job, std::string url) {
 	addUrl(url, 1+job.depth);
 }
 
-void SimpleCrawler::AddDocument(DownloadJob job, Document& document) {
+void SimpleCrawler::AddDocument(DownloadJob job, Document document) {
 	documentDownloaded = true;
 	lastDocument = document;
 }
