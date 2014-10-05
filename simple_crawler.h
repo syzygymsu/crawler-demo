@@ -8,7 +8,7 @@
 #include "repository.h"
 #include "crawler_job.h"
 #include "curl_easy_downloader.h"
-#include "libxml_parser.h"
+#include "libxml2_parser.h"
 
 
 class SimpleCrawler: virtual public DownloadFeedbackInteraface, virtual public ParseFeedbackInterface {
@@ -30,7 +30,7 @@ private:
 	CrawlerJob &job;
 	
 	CurlEasyDownloader downloader;
-	XmlParser parser;
+	Libxml2Parser parser;
 	
 	std::set<std::string> knownUrls;
 	std::queue<DownloadJob> downloadQueue;
