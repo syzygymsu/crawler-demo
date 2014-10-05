@@ -1,5 +1,4 @@
 #include "simple_crawler.h"
-#include "parse_job.h"
 #include "url_info.h"
 
 #include <algorithm>
@@ -64,7 +63,7 @@ void SimpleCrawler::execute() {
 				parseJob.document = lastDocument;
 				parseJob.depth = dlJob.depth;
 				std::cout << "Parsing: " << parseJob.document.originUrl << std::endl;
-				parser.parseDocument(parseJob, *this);
+				parser.Parse(parseJob, *this);
 			}
 		}
 	}

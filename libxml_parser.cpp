@@ -8,7 +8,7 @@
 
 #include "destruction_stack.h"
 
-void XmlParser::parseDocument(ParseJob &job, IParseFeedback& feedback) {
+void XmlParser::Parse(ParseJob job, ParseFeedbackInterface& feedback) {
 	DestructionStack destructors;
 	
 	htmlDocPtr docPtr = htmlReadFile(
@@ -48,7 +48,7 @@ void XmlParser::parseDocument(ParseJob &job, IParseFeedback& feedback) {
 		if(href) {
 			xmlChar * fullHref = xmlBuildURI(href, (const xmlChar*)job.document.originUrl.c_str());
 			if(fullHref) {
-				feedback.addHyperlink(job, (char*)fullHref);
+				feedback.AddHyperlink(job, (char*)fullHref);
 				xmlFree(fullHref);
 			}
 			xmlFree(href);

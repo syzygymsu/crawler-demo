@@ -9,10 +9,10 @@
 #include "crawler_job.h"
 #include "download_feedback.h"
 #include "curl_easy_downloader.h"
-#include "parse_feedback.h"
+#include "parse_interface.h"
 #include "libxml_parser.h"
 
-class SimpleCrawler: virtual IDownloadFeedback, virtual IParseFeedback {
+class SimpleCrawler: virtual IDownloadFeedback, virtual ParseFeedbackInterface {
 public:
 	SimpleCrawler(Repository &repository, CrawlerJob &job);
 	

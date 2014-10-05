@@ -1,13 +1,11 @@
 #ifndef XMLPARSER_H
 #define	XMLPARSER_H
 
-#include "document.h"
-#include "parse_feedback.h"
+#include "parse_interface.h"
 
-class XmlParser {
+class XmlParser: virtual public ParserInterface {
 public:
-	void parseDocument(ParseJob &job, IParseFeedback& feedback);
-
+	void Parse(ParseJob job, ParseFeedbackInterface& feedback);
 };
 
 #endif	/* XMLPARSER_H */
