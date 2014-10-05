@@ -1,14 +1,15 @@
-#ifndef EASYDOWNLOADER_H
-#define	EASYDOWNLOADER_H
+#ifndef CURLEASYDOWNLOADER_H_
+#define	CURLEASYDOWNLOADER_H_
 
 #include "repository.h"
 #include "download_interface.h"
 
-class EasyDownloader: public DownloaderBase {
+
+// Простой загрузчик на основе curl-easy
+class CurlEasyDownloader: public DownloaderBase {
 public:
-	void Download(DownloadJob job);
-private:
-	static size_t curlWriteCallback(char *ptr, size_t size, size_t nmemb, void *userdata);
+	void Download(DownloadJob job) override;
 };
 
-#endif	/* EASYDOWNLOADER_H */
+
+#endif	/* CURLEASYDOWNLOADER_H_ */
