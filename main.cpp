@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
 		// непосредственно запуск
 		Repository repo(basePath);
 		SimpleCrawler crawler(repo, job);
-		crawler.execute();
+		crawler.Execute();
 	} catch(std::string s) {
 		std::cout << "Exception: " << s << std::endl;
 	} catch(std::runtime_error e) {

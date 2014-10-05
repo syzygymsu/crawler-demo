@@ -1,5 +1,5 @@
-#ifndef SIMPLECRAWLER_H
-#define	SIMPLECRAWLER_H
+#ifndef SIMPLECRAWLER_H_
+#define	SIMPLECRAWLER_H_
 
 #include <queue>
 #include <set>
@@ -11,34 +11,43 @@
 #include "libxml2_parser.h"
 
 
-class SimpleCrawler: virtual public DownloadFeedbackInteraface, virtual public ParseFeedbackInterface {
+// Простой краулер с очередью на загрузку, сразу же парсит скачанные файлы.
+// Сам же предоставляет интерфейсы обратной связи для парсера и загрузчика.
+class SimpleCrawler:
+		virtual public DownloadFeedbackInteraface,
+		virtual public ParseFeedbackInterface {
 public:
+	// Конструктор с установкой зависимостей
 	SimpleCrawler(Repository &repository, CrawlerJob &job);
 	
-	void execute();
+	// Запуск краулера
+	void Execute();
 private:
 	// реализация DownloadFeedbackInteraface
-	virtual void AddRedirect(DownloadJob job, std::string url);
-	virtual void AddDocument(DownloadJob job, Document document);
+	void AddRedirect(DownloadJob job, std::string url) override;
+	void AddDocument(DownloadJob job, Document document) override;
 	
 	// реализация ParseFeedbackInterface
-	virtual void AddHyperlink(ParseJob job, std::string url);
+	void AddHyperlink(ParseJob job, std::string url) override;
 
-	void addUrl(std::string url, int depth);
+	// добавление URL в очередь с дополнительными проверками
+	void AddUrl(std::string url, int depth);
 
-	Repository &repository;
-	CrawlerJob &job;
+	// Репозиторий для сохранения скачанных файлов
+	Repository &repository_;
+	// Исходная задача
+	CrawlerJob &crawler_job_;
 	
-	CurlEasyDownloader downloader;
-	Libxml2Parser parser;
+	// Загрузчик
+	CurlEasyDownloader downloader_;
+	// Парсер
+	Libxml2Parser parser_;
 	
-	std::set<std::string> knownUrls;
-	std::queue<DownloadJob> downloadQueue;
-	
-	Document lastDocument;
-	bool documentDownloaded;
-
+	// Набор обработанных URL (чтобы не скачивать их повторно)
+	std::set<std::string> known_urls_;
+	// Очередь задач на загрузку
+	std::queue<DownloadJob> download_queue_;
 };
 
-#endif	/* SIMPLECRAWLER_H */
 
+#endif	/* SIMPLECRAWLER_H_ */
