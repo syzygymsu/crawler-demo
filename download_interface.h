@@ -59,7 +59,7 @@ public:
 };
 
 
-// Базовый абстраутный класс загрузчика. Реализовано сохранение зависимостей.
+// Базовый абстрактный класс загрузчика. Реализовано сохранение зависимостей.
 class DownloaderBase: virtual public DownloaderInterface {
 public:
 	inline void init(
@@ -79,5 +79,6 @@ private:
 	Repository *repository_;
 	DownloadFeedbackInteraface *feedback_;
 };
+
 
 #endif	/* DOWNLOAD_INTERFACE_H_ */
