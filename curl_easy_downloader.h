@@ -1,7 +1,6 @@
 #ifndef CURLEASYDOWNLOADER_H_
 #define	CURLEASYDOWNLOADER_H_
 
-#include "repository.h"
 #include "download_interface.h"
 
 
