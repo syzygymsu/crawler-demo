@@ -102,9 +102,10 @@ void ThreadedCrawler::AddDocument(DownloadJob job, RepositoryDocument document) 
 void ThreadedCrawler::DownloadThread() {
 	while(!quit_) {
 		// Добавляем необходимое количество задач в активную загрузку
-		if(downloader_.count() < 10) {
+		if(downloader_.count() < crawler_job_.max_parallel) {
 			std::lock_guard<std::mutex> lock(download_mutex_);
-			while(downloader_.count() < 10 && !download_queue_.empty()) {
+			while(!download_queue_.empty() &&
+					downloader_.count() < crawler_job_.max_parallel) {
 				downloader_.Download(download_queue_.front());
 				download_queue_.pop();
 			}

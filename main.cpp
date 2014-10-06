@@ -40,6 +40,7 @@ int main(int arguments_count, char** arguments) {
 			("contains,c", po::value<std::vector<std::string> >(&job.must_contain), "download only URLs, containing one of this substrings")
 			("depth,d", po::value<int>(&job.max_depth)->default_value(5), "Maximum depth, -1 for no limit")
 			("max,m", po::value<int>(&job.max_count)->default_value(100), "Maximum number of URLs, -1 for no limit")
+			("parallel,p", po::value<int>(&job.max_parallel)->default_value(10), "Maximum parallel downloads")
 			("save,s", po::value<std::string>(&base_path)->default_value("sites"), "Save path")
 		;
 		
