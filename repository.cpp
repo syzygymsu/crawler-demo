@@ -23,9 +23,7 @@ Repository::Repository(const std::string& base_path):
 			throw std::string("Base path is not a directory");
 		}
 	} else {
-		if(!fs::create_directories(path)) {
-			throw std::string("Cannot create base path directory");
-		}
+		fs::create_directories(path);
 	}
 }
 
@@ -76,9 +74,7 @@ RepositoryDocument Repository::CreateDocument(std::string url) {
 	std::string save_path = PathFromUrl(url);
 	
 	fs::path path(save_path);
-	if(!fs::create_directories(path.parent_path())) {
-		throw std::string("Cannot create document directories");
-	}
+	fs::create_directories(path.parent_path());
 	
 	return RepositoryDocument::create(url, save_path);
 }
