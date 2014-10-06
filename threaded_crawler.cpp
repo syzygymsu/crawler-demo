@@ -130,12 +130,14 @@ void ThreadedCrawler::DownloadThread() {
 
 
 void ThreadedCrawler::ParseThread() {
+	std::unique_lock<std::mutex> lock(parse_mutex_);
 	while(!quit_) {
-		std::unique_lock<std::mutex> lock(parse_mutex_);
-		if(parse_queue_.empty()) {
+		while(!quit_ && parse_queue_.empty()) {
 			// Блокируем тред если нет текущих задач
 			parse_condition_.wait(lock);
-		} else {
+		}
+		
+		if(!parse_queue_.empty()) {
 			// Выбираем следующую задачу
 			ParseJob parse_job = parse_queue_.front();
 			parse_queue_.pop();
@@ -144,6 +146,7 @@ void ThreadedCrawler::ParseThread() {
 			// Освобождаем мьютекс и исполняем задачу
 			lock.unlock();
 			parser_.Parse(parse_job);
+			lock.lock();
 			--live_threads_;
 		}
 	}
