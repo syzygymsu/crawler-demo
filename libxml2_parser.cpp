@@ -38,9 +38,9 @@ void Libxml2Parser::Parse(ParseJob job) {
 			(const xmlChar*)"//a",
 			xpath_context
 	);
-    if(!xpath_object) {
-        return;
-    }
+	if(!xpath_object) {
+		return;
+	}
 	destructors.push([xpath_object](){
 		xmlXPathFreeObject(xpath_object);
 	});
@@ -48,7 +48,7 @@ void Libxml2Parser::Parse(ParseJob job) {
 	// Обрабатываем результаты поиска
 	xmlNodeSetPtr nodes = xpath_object->nodesetval;
 	int size = (nodes) ? nodes->nodeNr : 0;
-    for(int i=0; i<size; ++i) {
+	for(int i=0; i<size; ++i) {
 		xmlNodePtr node = nodes->nodeTab[i];
 		xmlChar *href = xmlGetProp(node, (const xmlChar*)"href");
 		if(href) {
