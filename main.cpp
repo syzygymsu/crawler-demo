@@ -52,18 +52,18 @@ int main(int argc, char** argv) {
 
 		CrawlerJob job;
 		
-		job.maxDepth = maxDepth;
-		job.maxCount = maxCount;
+		job.max_depth = maxDepth;
+		job.max_count = maxCount;
 		
 		if(vm.count("init")) {
 			
 			for(auto &url: vm["init"].as<std::vector<std::string>>()) {
-				job.initialUrls.push_back(url);
+				job.initial_urls.push_back(url);
 			}
 		}
 		if(vm.count("contains")) {
 			for(auto & url: vm["contains"].as<std::vector<std::string>>()) {
-				job.mustContain.push_back(url);
+				job.must_contain.push_back(url);
 			}
 		}
 		

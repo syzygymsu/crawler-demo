@@ -11,7 +11,7 @@ SimpleCrawler::SimpleCrawler(Repository& repository, CrawlerJob& job) :
 	downloader_.init(repository, *this);
 	parser_.init(*this);
 
-	for(auto url: job.initialUrls) {
+	for(auto url: job.initial_urls) {
 		AddUrl(url, 0);
 	}
 }
@@ -23,14 +23,14 @@ void SimpleCrawler::AddUrl(std::string url, int depth) {
 		return;
 	}
 	
-	if(crawler_job_.maxCount>0 && known_urls_.size()>=crawler_job_.maxCount) {
+	if(crawler_job_.max_count>0 && known_urls_.size()>=crawler_job_.max_count) {
 		// достигнут лимит общего количества запросов
 		return;
 	}
 	
-	if(!crawler_job_.mustContain.empty()) {
+	if(!crawler_job_.must_contain.empty()) {
 		bool match = std::any_of(
-			crawler_job_.mustContain.begin(), crawler_job_.mustContain.end(),
+			crawler_job_.must_contain.begin(), crawler_job_.must_contain.end(),
 			[url](const std::string &substring) {
 				return std::string::npos != url.find(substring);
 			}
@@ -73,7 +73,7 @@ void SimpleCrawler::AddRedirect(DownloadJob job, std::string url) {
 
 
 void SimpleCrawler::AddDocument(DownloadJob download_job, RepositoryDocument document) {
-	if(crawler_job_.maxDepth>=0 && download_job.depth>=crawler_job_.maxDepth) {
+	if(crawler_job_.max_depth>=0 && download_job.depth>=crawler_job_.max_depth) {
 		// Превышена глубина сканирования
 		return ;
 	}
