@@ -11,6 +11,7 @@
 #include "repository.h"
 #include "crawler_job.h"
 #include "simple_crawler.h"
+#include "threaded_crawler.h"
 
 namespace po = boost::program_options;
 
@@ -41,7 +42,7 @@ int main(int arguments_count, char** arguments) {
 			("max,m", po::value<int>(&job.max_count)->default_value(100), "Maximum number of URLs, -1 for no limit")
 			("save,s", po::value<std::string>(&base_path)->default_value("sites"), "Save path")
 		;
-
+		
 		po::variables_map variables;
 		po::store(po::parse_command_line(arguments_count, arguments, description), variables);
 		po::notify(variables);
@@ -53,7 +54,7 @@ int main(int arguments_count, char** arguments) {
 
 		// непосредственно запуск
 		Repository repo(base_path);
-		SimpleCrawler crawler(repo, job);
+		ThreadedCrawler crawler(repo, job);
 		crawler.Execute();
 	} catch(std::string s) {
 		std::cout << "Exception: " << s << std::endl;
