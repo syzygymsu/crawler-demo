@@ -24,52 +24,35 @@ void shutdown() {
 	xmlCleanupParser();
 }
 
-int main(int argc, char** argv) {
+int main(int arguments_count, char** arguments) {
 	boot();
 
 	try {
-		std::string basePath;
-		int maxDepth, maxCount;
-		
-		po::options_description desc("Allowed options");
-		desc.add_options()
-			("help,h", "show help message")
-			("init,i", po::value<std::vector<std::string> >(), "initial URLs")
-			("contains,c", po::value<std::vector<std::string> >(), "download only URLs, containing one of this substrings")
-			("depth,d", po::value<int>(&maxDepth)->default_value(5), "Maximum depth, -1 for no limit")
-			("max,m", po::value<int>(&maxCount)->default_value(100), "Maximum number of URLs, -1 for no limit")
-			("save,s", po::value<std::string>(&basePath)->default_value("sites"), "Save path")
-		;
-
-		po::variables_map vm;
-		po::store(po::parse_command_line(argc, argv, desc), vm);
-		po::notify(vm);
-
-		if (vm.count("help")) {
-			std::cout << desc << std::endl;
-			return 1;
-		}
+		std::string base_path;
 
 		CrawlerJob job;
 		
-		job.max_depth = maxDepth;
-		job.max_count = maxCount;
-		
-		if(vm.count("init")) {
-			
-			for(auto &url: vm["init"].as<std::vector<std::string>>()) {
-				job.initial_urls.push_back(url);
-			}
+		po::options_description description("Allowed options");
+		description.add_options()
+			("help,h", "show help message")
+			("init,i", po::value<std::vector<std::string> >(&job.initial_urls), "initial URLs")
+			("contains,c", po::value<std::vector<std::string> >(&job.must_contain), "download only URLs, containing one of this substrings")
+			("depth,d", po::value<int>(&job.max_depth)->default_value(5), "Maximum depth, -1 for no limit")
+			("max,m", po::value<int>(&job.max_count)->default_value(100), "Maximum number of URLs, -1 for no limit")
+			("save,s", po::value<std::string>(&base_path)->default_value("sites"), "Save path")
+		;
+
+		po::variables_map variables;
+		po::store(po::parse_command_line(arguments_count, arguments, description), variables);
+		po::notify(variables);
+
+		if (variables.count("help")) {
+			std::cout << description << std::endl;
+			return 1;
 		}
-		if(vm.count("contains")) {
-			for(auto & url: vm["contains"].as<std::vector<std::string>>()) {
-				job.must_contain.push_back(url);
-			}
-		}
-		
-		
+
 		// непосредственно запуск
-		Repository repo(basePath);
+		Repository repo(base_path);
 		SimpleCrawler crawler(repo, job);
 		crawler.Execute();
 	} catch(std::string s) {
