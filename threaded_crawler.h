@@ -23,6 +23,7 @@ public:
 	
 	// Запуск краулера
 	void Execute();
+	
 private:
 	// реализация DownloadFeedbackInteraface
 	void AddRedirect(DownloadJob job, std::string url) override;
@@ -38,6 +39,13 @@ private:
 	void ParseThread();
 	// Стартовая функция треда загрузки
 	void DownloadThread();
+
+	// Текущее количество найденных адресов
+	int ParseQueueSize();
+	// Текущий размер очереди скачивания (включая активные закачки)
+	int DownloadQueueSize();
+	// Текущий размер очереди парсинга
+	int KnownUrlsSize();
 	
 	// Репозиторий для сохранения скачанных файлов
 	Repository &repository_;
@@ -66,7 +74,7 @@ private:
 	// Мьютекс на очередь парсинга
 	std::mutex parse_mutex_;
 
-	std::condition_variable download_condition_;
+	// Условие ожидания задач парсинга
 	std::condition_variable parse_condition_;
 };
 

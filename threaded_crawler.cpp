@@ -2,8 +2,10 @@
 
 #include <algorithm>
 #include <thread>
+#include <sys/unistd.h>
 
 #include "url_info.h"
+
 
 ThreadedCrawler::ThreadedCrawler(Repository &repository, CrawlerJob &job):
 		repository_(repository), crawler_job_(job) {
@@ -15,6 +17,7 @@ ThreadedCrawler::ThreadedCrawler(Repository &repository, CrawlerJob &job):
 	}
 }
 
+
 void ThreadedCrawler::Execute() {
 	quit_.store(false);
 	live_threads_.store(0);
@@ -22,9 +25,16 @@ void ThreadedCrawler::Execute() {
 	std::thread download_thread(&ThreadedCrawler::DownloadThread, this);
 	std::thread parse_thread(&ThreadedCrawler::ParseThread, this);
 	
+	while(!quit_) {
+		fprintf( stdout, "Found: %6d, Download queue: %6d, Parse queue: %6d\n",
+				KnownUrlsSize(), DownloadQueueSize(), ParseQueueSize() );
+		sleep(1);
+	}
+	
 	download_thread.join();
 	parse_thread.join();
 }
+
 
 void ThreadedCrawler::AddUrl(std::string url, int depth) {
 	std::lock_guard<std::mutex> lock(download_mutex_);
@@ -66,13 +76,16 @@ void ThreadedCrawler::AddUrl(std::string url, int depth) {
 	download_queue_.push(downloadJob);
 }
 
+
 void ThreadedCrawler::AddHyperlink(ParseJob job, std::string url) {
 	AddUrl(url, 1+job.depth);
 }
 
+
 void ThreadedCrawler::AddRedirect(DownloadJob job, std::string url) {
 	AddUrl(url, 1+job.depth);
 }
+
 
 void ThreadedCrawler::AddDocument(DownloadJob job, RepositoryDocument document) {
 	ParseJob parse_job;
@@ -81,6 +94,8 @@ void ThreadedCrawler::AddDocument(DownloadJob job, RepositoryDocument document) 
 	
 	std::lock_guard<std::mutex> lock(parse_mutex_);
 	parse_queue_.push(parse_job);
+	
+	parse_condition_.notify_one();
 }
 
 
@@ -102,6 +117,7 @@ void ThreadedCrawler::DownloadThread() {
 			
 			if(download_queue_.empty() && parse_queue_.empty() && 0==live_threads_) {
 				quit_ = true;
+				parse_condition_.notify_all();
 			}
 			
 			download_mutex_.unlock();
@@ -116,8 +132,10 @@ void ThreadedCrawler::ParseThread() {
 		ParseJob parse_job;
 		bool job_found = false;
 		{
-			std::lock_guard<std::mutex> lock(parse_mutex_);
-			if(!parse_queue_.empty()) {
+			std::unique_lock<std::mutex> lock(parse_mutex_);
+			if(parse_queue_.empty()) {
+				parse_condition_.wait(lock);
+			} else {
 				parse_job = parse_queue_.front();
 				parse_queue_.pop();
 				job_found = true;
@@ -130,4 +148,22 @@ void ThreadedCrawler::ParseThread() {
 			--live_threads_;
 		}
 	}
+}
+
+
+int ThreadedCrawler::DownloadQueueSize() {
+	std::lock_guard<std::mutex> lock(download_mutex_);
+	return download_queue_.size() + downloader_.count();
+}
+
+
+int ThreadedCrawler::ParseQueueSize() {
+	std::lock_guard<std::mutex> lock(parse_mutex_);
+	return parse_queue_.size();
+}
+
+
+int ThreadedCrawler::KnownUrlsSize() {
+	std::lock_guard<std::mutex> lock(download_mutex_);
+	return known_urls_.size();
 }
