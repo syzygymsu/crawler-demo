@@ -101,7 +101,7 @@ void ThreadedCrawler::AddDocument(DownloadJob job, RepositoryDocument document) 
 
 void ThreadedCrawler::DownloadThread() {
 	while(!quit_) {
-		
+		// Добавляем необходимое количество задач в активную загрузку
 		if(downloader_.count() < 10) {
 			std::lock_guard<std::mutex> lock(download_mutex_);
 			while(downloader_.count() < 10 && !download_queue_.empty()) {
@@ -110,8 +110,10 @@ void ThreadedCrawler::DownloadThread() {
 			}
 		}
 
+		// Обрабатываем события скачивания
 		downloader_.PerformOne();
 		
+		// Проверка на выход
 		if(!downloader_.count()) {
 			std::lock(download_mutex_, parse_mutex_);
 			
@@ -129,21 +131,18 @@ void ThreadedCrawler::DownloadThread() {
 
 void ThreadedCrawler::ParseThread() {
 	while(!quit_) {
-		ParseJob parse_job;
-		bool job_found = false;
-		{
-			std::unique_lock<std::mutex> lock(parse_mutex_);
-			if(parse_queue_.empty()) {
-				parse_condition_.wait(lock);
-			} else {
-				parse_job = parse_queue_.front();
-				parse_queue_.pop();
-				job_found = true;
-				++live_threads_;
-			}
-		}
-		
-		if(job_found) {
+		std::unique_lock<std::mutex> lock(parse_mutex_);
+		if(parse_queue_.empty()) {
+			// Блокируем тред если нет текущих задач
+			parse_condition_.wait(lock);
+		} else {
+			// Выбираем следующую задачу
+			ParseJob parse_job = parse_queue_.front();
+			parse_queue_.pop();
+			++live_threads_;
+
+			// Освобождаем мьютекс и исполняем задачу
+			lock.unlock();
 			parser_.Parse(parse_job);
 			--live_threads_;
 		}

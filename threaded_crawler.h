@@ -14,6 +14,8 @@
 #include "libxml2_parser.h"
 
 
+// Усовершенствованный краулер. Использует реализацию на curl-multi и
+// запускает отдельные треды для скачивания и парсинга.
 class ThreadedCrawler:
 		virtual public DownloadFeedbackInteraface,
 		virtual public ParseFeedbackInterface {
